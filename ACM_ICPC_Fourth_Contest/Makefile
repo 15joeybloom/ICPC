@@ -19,4 +19,4 @@ F : problemF.cpp
 	g++ -ggdb -o F problemF.cpp
 
 clean :
-	rm A B C D E F
+	rm -f A B C D E F
