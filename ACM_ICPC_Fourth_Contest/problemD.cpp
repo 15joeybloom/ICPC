@@ -38,20 +38,27 @@ int main()
             if(S[i]) numToMove++;
         }
         minCost = numToMove*A;
+        int swapCost = A-B;
+        int swappingCost = 0;
 
         int curr = p;
         for(int i = 1; i <= numToMove; i++)
         {
             while(!S[curr]) curr++;
             
-            int cost = (numToMove-i)*A;
             for(int j = curr; j >= p; j--)
             {
+                int k;
+                for(k = j; S[k]; k--);
 
+                S[j] = false;
+                S[k] = true;
+                swappingCost += (j-k)*swapCost;
             }
-        }
 
-        
+            minCost = min(minCost,swappingCost+(numToMove-i)*A);
+        }
+        printf("%d\n",minCost);
     }
 
 }
