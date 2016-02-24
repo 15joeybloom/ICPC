@@ -9,14 +9,14 @@ using namespace std;
 
 char N = 'N', E='E',W='W',S='S',R='R',L='L';
 
-char scent[51][51];
+bool scent[51][51];
 int main()
 {
     for(int iii = 0; iii < 51; iii++)
     {
         for(int jjj = 0; jjj < 51; jjj++)
         {
-            scent[iii][jjj] = 0;
+            scent[iii][jjj] = false;
         }
     }
     
@@ -56,9 +56,7 @@ int main()
             }
             else
             {
-                if(scent[ii][ij] == dir)
-                {}
-                else if(dir == N)
+                if(dir == N)
                 {
                     if(ij+1 > j) lost = true;
                     else ij++;
@@ -79,9 +77,11 @@ int main()
                     else ii--;
                 }
 
+                if(lost && scent[ii][ij]) lost = false;
+
                 if(lost)
                 {
-                    scent[ii][ij] = dir;
+                    scent[ii][ij] = true;
                     goto losthim;
                 }
             }
