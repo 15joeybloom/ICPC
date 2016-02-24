@@ -9,9 +9,17 @@ using namespace std;
 
 char N = 'N', E='E',W='W',S='S',R='R',L='L';
 
-bool scent[51][51];
+char scent[51][51];
 int main()
 {
+    for(int iii = 0; iii < 51; iii++)
+    {
+        for(int jjj = 0; jjj < 51; jjj++)
+        {
+            scent[iii][jjj] = 0;
+        }
+    }
+    
     int i, j;
     scanf("%d %d", &i, &j);
     
@@ -46,32 +54,34 @@ int main()
                 else if(dir == S) dir = E;
                 else dir = N;
             }
-            else if(scent[ii][ij]){}
             else
             {
-                if(dir == N)
+                if(scent[ii][ij] == dir)
+                {}
+                else if(dir == N)
                 {
                     if(ij+1 > j) lost = true;
                     else ij++;
                 }
-                if(dir == E)
+                else if(dir == E)
                 {
                     if(ii+1 > i) lost = true;
                     else ii++;
                 }
-                if(dir == S)
+                else if(dir == S)
                 {
                     if(ij-1 < 0) lost = true;
                     else ij--;
                 }
-                if(dir == W)
+                else if(dir == W)
                 {
                     if(ii-1 < 0) lost = true;
                     else ii--;
                 }
+
                 if(lost)
                 {
-                    scent[ii][ij] = true;
+                    scent[ii][ij] = dir;
                     goto losthim;
                 }
             }
