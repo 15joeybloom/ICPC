@@ -7,13 +7,13 @@
 #include <queue>
 using namespace std;
 
-long int x[1000000];
+long long int x[1000000];
 
 /*
-void fill(long int n)
+void fill(long long int n)
 {
-    long int a = 2*n;
-    long int b = (n+1);
+    long long int a = 2*n;
+    long long int b = (n+1);
 
     if(a < 1000000)
     {
@@ -35,9 +35,9 @@ int main()
     //x[1] = 1;
     //fill(1L);
 
-    for(long int ii = 1; ii < 1000000; ii++)
+    for(long long int ii = 1; ii < 1000000; ii++)
     {
-        long int counter = 1, temp = ii;
+        long long int counter = 1, temp = ii;
         while(temp!=1)
         {
             if(temp%2) temp=3*temp+1;
@@ -48,15 +48,26 @@ int main()
         x[ii] = counter;
     }
 
-    long int i, j;
-    while(scanf("%ld %ld", &i, &j)!=EOF)
+    long long int i, j;
+    while(scanf("%lld %lld", &i, &j)!=EOF)
     {
-        long int mymax = 0;
-        for(long int ii = i; ii <= j; ii++)
+        long long int lower, greater;
+        if(i < j)
+        {
+            lower = i;
+            greater = j;
+        }
+        else
+        {
+            lower = j;
+            greater = i;
+        }
+        long long int mymax = 0;
+        for(long long int ii = lower; ii <= greater; ii++)
         {
             mymax = max(mymax, x[ii]);
         }
 
-        printf("%d %d %d\n",i,j,mymax);
+        printf("%lld %lld %lld\n",i,j,mymax);
     }
 }
