@@ -11,15 +11,18 @@ int main()
 {
     char a[1001],b[1001];
 
-    char c = 0;
+    char c = 'a';
     for(int i = 0; i < 1000; i++)
     {
         a[i] = c;
         b[i] = c;
         c++;
+        if(c>'z')c='a';
     }
 
     a[999]++;
+    a[1000] = 0;
+    b[1000] = 0;
 
     printf("%s\n%s\n",a,b);
 

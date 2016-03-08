@@ -11,11 +11,12 @@ using namespace std;
 int A[1001][1001];
 int main()
 {
-    char a[1001],b[1001];
+    string a, b;
 
-    while(scanf("%s %s",a,b)!=EOF)
+    while(!getline(cin, a).eof())
     {
-        int N = strlen(a), M = strlen(b);
+        getline(cin, b);
+        int N = a.length(), M = b.length();
 
         for(int i = 0; i < N; i++)
             A[i][0] = 0;
