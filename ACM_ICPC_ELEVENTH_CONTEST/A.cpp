@@ -19,7 +19,7 @@ struct pyr
 
 //int dp[PYRLIM+10];
 //int largest[PYRLIM+10];
-bool dp[400][PYRLIM+10];
+int dp[400][PYRLIM+10];
 
 bool operator<(const pyr &a, const pyr &b)
 {
@@ -66,43 +66,43 @@ int main()
 
     sort(pyrs.begin(), pyrs.end());
 
-/*
+    /*
+       memset(dp, INF, sizeof(dp));
+       memset(largest, -1, sizeof(dp));
+       dp[0] = 0;
+       */
     memset(dp, INF, sizeof(dp));
-    memset(largest, -1, sizeof(dp));
-    dp[0] = 0;
-    */
-    memset(dp, false, sizeof(dp));
-    dp[0][0] = true;
+    dp[0][0] = 0;
     //for(long int i = 0; i < pyrs.size(); i++)
-    for(long int i = 1; i < pyrs.size(); i++)
+    for(long int i = 1; i <= pyrs.size(); i++)
     {
         for(long int j = PYRLIM; j >= 0; j--)
         {
-            if(dp[i-1][j])
+            if(dp[i-1][j] != INF)
             {
-                dp[i][j] = true;
+                dp[i][j] = dp[i-1][j];
                 long int potential = j+pyrs[i-1].c;
                 if(potential <= PYRLIM)
                 {
-                    dp[i][potential] = true;
+                    dp[i][potential] = min(dp[i][potential], dp[i-1][j]+1);
                 }
             }
             /*
-            if(dp[j]!=INF)
-            {
-                long int potential = j+pyrs[i].c;
-                if(potential <= PYRLIM)
-                {
-                    int newCount = dp[j]+1;
-                    if(dp[potential] >= newCount)
-                    {
-                        dp[potential] = newCount; 
-                        if(largest[potential] == -1)
-                            largest[potential] = i;
-                    }
-                }
-            }
-            */
+               if(dp[j]!=INF)
+               {
+               long int potential = j+pyrs[i].c;
+               if(potential <= PYRLIM)
+               {
+               int newCount = dp[j]+1;
+               if(dp[potential] >= newCount)
+               {
+               dp[potential] = newCount; 
+               if(largest[potential] == -1)
+               largest[potential] = i;
+               }
+               }
+               }
+               */
         }
     }
 
@@ -111,36 +111,36 @@ int main()
     {
         printf("Case %d:", t);
 
-        if(dp[pyrs.size()-1][c])
+        if(dp[pyrs.size()-1][c]==INF)
+            printf(" impossible");
+        else
         {
-            for(int i = pyrs.size()-1; c; i--)
+            for(int i = pyrs.size(); c; i--)
             {
                 long int potential = c-pyrs[i-1].c;
-                if(potential >= 0 && dp[i-1][potential])
+                if(potential >= 0 && dp[i-1][potential] < dp[i][c])
                 {
                     printf(" %d%c", pyrs[i-1].b, pyrs[i-1].type);
                     c = potential;
                 }
             }
         }
-        else
-            printf(" impossible");
-/*
-        if(dp[c]==INF)
-            printf(" impossible");
-        else
-        {
-            for(int i = pyrs.size()-1; c; i--)
-            {
-                long int potential = c-pyrs[i].c;
-                if(potential >= 0 && dp[potential] < dp[c] && largest[potential] < i)
-                {
-                    printf(" %d%c", pyrs[i].b, pyrs[i].type);
-                    c = potential;
-                }
-            }
-        }
-        */
+        /*
+           if(dp[c]==INF)
+           printf(" impossible");
+           else
+           {
+           for(int i = pyrs.size()-1; c; i--)
+           {
+           long int potential = c-pyrs[i].c;
+           if(potential >= 0 && dp[potential] < dp[c] && largest[potential] < i)
+           {
+           printf(" %d%c", pyrs[i].b, pyrs[i].type);
+           c = potential;
+           }
+           }
+           }
+           */
 
         printf("\n");
     }
