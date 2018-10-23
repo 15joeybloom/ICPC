@@ -33,8 +33,12 @@ int main()
         scanf("%lld %lld %lld", &p, &q, &b);
         p %= q;
         q /= gcd(p, q);
-        while (gcd(q, b) != 1)
-            q /= gcd(q, b);
+        LL g = gcd(b, q);
+        while (g != 1) {
+            while (q % g == 0)
+                q /= g;
+            g = gcd(b, q);
+        }
         if (q == 1)
             printf("Finite\n");
         else

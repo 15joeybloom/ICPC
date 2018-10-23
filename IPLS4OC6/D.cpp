@@ -16,9 +16,9 @@ using namespace std;
 
 typedef long long LL;
 typedef pair<LL, int> P;
-LL n, m, d, a[100010];
-P sorted[100010];
-int day[100010];
+LL n, m, d, a[200010];
+P sorted[200010];
+int day[200010];
 int main()
 {
     cin.tie(0);
