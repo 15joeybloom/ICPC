@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define INF 10000000000
+#define INF 100000LL
 typedef long long LL;
 
 LL adj[4000][4000];
@@ -9,13 +9,14 @@ int n, m;
 int bank, sink;
 LL cost[400];
 char terrain[40][40];
-bool visited[400];
-int parent[400];
+bool visited[4000];
+int parent[4000];
 LL answer;
 
 LL getcap(int i, int j) {
     if (terrain[i][j] == '.' || terrain[i][j] == 'B')
         return INF;
+    //printf("cost at %d %d is %lld\n", i, j, cost[terrain[i][j]]);
     return cost[terrain[i][j]];
 }
 int index(int i, int j) {
@@ -23,6 +24,12 @@ int index(int i, int j) {
 }
 bool tryff() {
     //printf("trying...\n");
+    for (int i = 0; i <= sink; i++) {
+        for (int j = 0; j <= sink; j++)
+            printf("%lld\t", adj[i][j]);
+        printf("\n");
+    }
+
     memset(visited, 0, sizeof(visited));
     vector<int> stk;
     stk.push_back(bank);
@@ -47,10 +54,18 @@ bool tryff() {
                 x = y;
             }
             answer += augment;
-            //printf("Augmenting %lld\n", augment);
+            printf("Augmenting %lld\n", augment);
             return true;
         }
         for (int next = 0; next <= sink; next++) {
+            /*
+            if (visited[next]) {
+                printf("%d is visited.\n", next);
+            }
+            if (adj[curr][next] > 0) {
+                printf("%d %d is %lld\n", curr, next, adj[curr][next]);
+            }
+            */
             if (adj[curr][next] > 0 && !visited[next]) {
                 parent[next] = curr;
                 stk.push_back(next);
@@ -112,14 +127,6 @@ int main()
         adj[index(0,i)][sink] = INF;
         adj[index(m-1,i)][sink] = INF;
     }
-
-    /*
-    for (int i = 0; i <= sink; i++) {
-        for (int j = 0; j <= sink; j++)
-            printf("%lld ", adj[i][j]);
-        printf("\n");
-    }
-    */
 
     memset(visited, 0, sizeof(visited));
     vector<int> stk;
