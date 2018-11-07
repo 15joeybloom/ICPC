@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define INF 100000LL
+#define INF 10000000000LL
 typedef long long LL;
 
 LL adj[4000][4000];
@@ -16,20 +16,12 @@ LL answer;
 LL getcap(int i, int j) {
     if (terrain[i][j] == '.' || terrain[i][j] == 'B')
         return INF;
-    //printf("cost at %d %d is %lld\n", i, j, cost[terrain[i][j]]);
     return cost[terrain[i][j]];
 }
-int index(int i, int j) {
-    return i*n+j;
+int index(int i, int j, bool in) {
+    return 2*(i*n+j)+(in?1:0);
 }
 bool tryff() {
-    //printf("trying...\n");
-    for (int i = 0; i <= sink; i++) {
-        for (int j = 0; j <= sink; j++)
-            printf("%lld\t", adj[i][j]);
-        printf("\n");
-    }
-
     memset(visited, 0, sizeof(visited));
     vector<int> stk;
     stk.push_back(bank);
@@ -37,7 +29,6 @@ bool tryff() {
     while (!stk.empty()) {
         int curr = stk.back();
         stk.pop_back();
-        //printf("visiting %d\n", curr);
         if (curr == sink) {
             LL augment = INF;
             int x = curr;
@@ -54,18 +45,9 @@ bool tryff() {
                 x = y;
             }
             answer += augment;
-            printf("Augmenting %lld\n", augment);
             return true;
         }
         for (int next = 0; next <= sink; next++) {
-            /*
-            if (visited[next]) {
-                printf("%d is visited.\n", next);
-            }
-            if (adj[curr][next] > 0) {
-                printf("%d %d is %lld\n", curr, next, adj[curr][next]);
-            }
-            */
             if (adj[curr][next] > 0 && !visited[next]) {
                 parent[next] = curr;
                 stk.push_back(next);
@@ -87,45 +69,36 @@ int main()
         scanf("%lld", cost+c);
     }
 
+    memset(adj, 0, sizeof(adj));
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
             if (terrain[i][j] == 'B')
-                bank = index(i, j);
+                bank = index(i, j, true);
+            adj[index(i,j,true)][index(i,j,false)] = getcap(i,j);
         }
     }
-    sink = n*m;
+    sink = 2*n*m;
 
-    memset(adj, 0, sizeof(adj));
     for (int i = 0; i < m-1; i++) {
         for (int j = 0; j < n; j++) {
-            /*
-            LL cap = min(getcap(i, j), getcap(i+1,j));
-            adj[index(i,j)][index(i+1,j)] = getcap(i, j);
-            adj[index(i+1,j)][index(i,j)] = getcap(i+1, j);
-            */
-            adj[index(i,j)][index(i+1,j)] = getcap(i+1, j);
-            adj[index(i+1,j)][index(i,j)] = getcap(i, j);
+            adj[index(i,j,false)][index(i+1,j,true)] = INF;
+            adj[index(i+1,j,false)][index(i,j,true)] = INF;
 
         }
     }
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n-1; j++) {
-            /*
-            LL cap = min(getcap(i, j), getcap(i,j+1));
-            adj[index(i,j)][index(i,j+1)] = 0;
-            adj[index(i,j+1)][index(i,j)] = cap;
-            */
-            adj[index(i,j)][index(i,j+1)] = getcap(i, j+1);
-            adj[index(i,j+1)][index(i,j)] = getcap(i, j);
+            adj[index(i,j,false)][index(i,j+1,true)] = INF;
+            adj[index(i,j+1,false)][index(i,j,true)] = INF;
         }
     }
     for (int i = 0; i < m; i++) {
-        adj[index(i,0)][sink] = INF;
-        adj[index(i,n-1)][sink] = INF;
+        adj[index(i,0,false)][sink] = INF;
+        adj[index(i,n-1,false)][sink] = INF;
     }
     for (int i = 1; i < n-1; i++) {
-        adj[index(0,i)][sink] = INF;
-        adj[index(m-1,i)][sink] = INF;
+        adj[index(0,i,false)][sink] = INF;
+        adj[index(m-1,i,false)][sink] = INF;
     }
 
     memset(visited, 0, sizeof(visited));
@@ -134,7 +107,6 @@ int main()
     while (!stk.empty()) {
         int curr = stk.back();
         stk.pop_back();
-        //printf("Visiting %d\n", curr);
         if (curr == sink) {
             printf("-1\n");
             return 0;
