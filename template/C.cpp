@@ -1,19 +1,10 @@
-#include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <algorithm>
-#include <cmath>
-#include <climits>
-#include <vector>
-#include <queue>
-#include <cstring>
-#include <iterator>
-#include <list>
-#include <set>
-#include <map>
-#include <bitset>
+#include <bits/stdc++.h>
 using namespace std;
+
+typedef long long LL;
 
 int main()
 {
+    cin.tie(0);
+    ios_base::sync_with_stdio(false);
 }
