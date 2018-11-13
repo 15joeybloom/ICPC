@@ -92,6 +92,8 @@ bool evaluate() {
                 break;
         }
     }
+
+    return nodes[1].value;
 }
 
 void contributing() {
@@ -167,7 +169,7 @@ int main()
 
     for (int i = 1; i <= n; i++) {
         if (nodes[i].gate == IN)
-            printf("%d", nodes[i].contributing ? (value ? 1 : 0) : (value ? 0 : 1));
+            printf("%d", nodes[i].contributing != value ? 1 : 0);
     }
     printf("\n");
 }
